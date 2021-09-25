@@ -23,5 +23,22 @@ namespace Rocky.Controllers
             IEnumerable<Category> objLsit = _db.Category;
             return View(objLsit);
         }
+
+
+        //GET - CREATE
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        //POST - CREATE
+        [HttpPost]
+        public IActionResult Create(Category obj)
+        {
+            _db.Category.Add(obj);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
     }
 }
