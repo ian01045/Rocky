@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Rocky.Controllers
 {
+
     public class ApplicationTypeController : Controller
     {
 
@@ -24,6 +25,7 @@ namespace Rocky.Controllers
             return View(objLsit);
         }
 
+
         //GET - CREATE
         public IActionResult Create()
         {
@@ -34,7 +36,77 @@ namespace Rocky.Controllers
         [HttpPost]
         public IActionResult Create(ApplicationType obj)
         {
-            _db.ApplicationType.Add(obj);
+            //server side validation
+            if (ModelState.IsValid)
+            {
+                _db.ApplicationType.Add(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            return View(obj);
+        }
+
+        //GET - EDIT
+        public IActionResult Edit(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var obj = _db.ApplicationType.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        //POST - EDIT
+        [HttpPost]
+        public IActionResult Edit(ApplicationType obj)
+        {
+            //server side validation
+            if (ModelState.IsValid)
+            {
+                _db.ApplicationType.Update(obj);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+
+            }
+            return View(obj);
+        }
+
+        //GET - DELETE
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+
+            var obj = _db.ApplicationType.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+
+            return View(obj);
+        }
+
+        //POST - DELETE
+        [HttpPost]
+        public IActionResult DeletePost(int? id)
+        {
+
+            var obj = _db.ApplicationType.Find(id);
+            if (obj == null)
+            {
+                return NotFound();
+            }
+            _db.ApplicationType.Remove(obj);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
